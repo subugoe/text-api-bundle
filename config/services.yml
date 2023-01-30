@@ -1,0 +1,14 @@
+services:
+
+  Subugoe\TextApiBundle\Controller\TextApiController:
+    autowire: true
+    autoconfigure: true
+    arguments:  ["@subugoe_text_api.text_api_service", "@router"]
+
+  subugoe_text_api.text_api_service:
+    class:      Subugoe\TextApiBundle\Service\TextApiService
+    arguments: [ "@router", "@parameter_bag"]
+
+  subugoe_text_api.translator:
+    class: Subugoe\TextApiBundle\Translator\SubugoeTranslator
+

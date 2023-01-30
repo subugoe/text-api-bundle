@@ -1,0 +1,34 @@
+subugoe_text_api_page_annotation_collection:
+    path:      "text-api/{id}/{page}/annotationCollection.json"
+    methods:  "GET"
+    defaults: { _controller: Subugoe\TextApiBundle\Controller\TextApiController::pageAnnotationCollection }
+
+subugoe_text_api_annotation_collection:
+    path:      "text-api/{id}/annotationCollection.json"
+    methods:  "GET"
+    defaults: { _controller: Subugoe\TextApiBundle\Controller\TextApiController::annotationCollection }
+
+subugoe_text_api_annotation_page:
+    path:      "text-api/{id}/{page}/annotationPage.json"
+    methods:  "GET"
+    defaults: { _controller: Subugoe\TextApiBundle\Controller\TextApiController::annotationPage }
+
+subugoe_text_api_item_page:
+    path:      "text-api/{manifest}/{item}/{revision}/item.json"
+    methods:  "GET"
+    defaults: { _controller: Subugoe\TextApiBundle\Controller\TextApiController::item, "revision":"latest" }
+
+subugoe_text_api_item_full:
+    path:      "text-api/{id}/{revision}/full.json"
+    methods:  "GET"
+    defaults: { _controller: Subugoe\TextApiBundle\Controller\TextApiController::full, "revision":"0.0.2" }
+
+subugoe_text_api_manifest:
+    path:      "text-api/{id}/manifest.json"
+    methods:  "GET"
+    defaults: { _controller: Subugoe\TextApiBundle\Controller\TextApiController::manifest }
+
+subugoe_text_api_content:
+    path:      "text-api/{id}/content"
+    methods:  "GET"
+    defaults: { _controller: Subugoe\TextApiBundle\Controller\TextApiController::content }

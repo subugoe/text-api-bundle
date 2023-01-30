@@ -2,8 +2,8 @@
 
 namespace Subugoe\TextApiBundle;
 
-use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class SubugoeTextApiBundle extends AbstractBundle
+class SubugoeTextApiBundle extends Bundle
 {
 }
