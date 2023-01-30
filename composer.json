@@ -8,6 +8,7 @@
       "email": "pestov@sub.uni-goettingen.de"
     }
   ],
+  "type": "symfony-bundle",
   "autoload": {
     "psr-4": { "Subugoe\\TextApiBundle\\": "src/" }
   },
