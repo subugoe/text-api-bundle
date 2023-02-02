@@ -1,19 +1,16 @@
 <?php
-
-declare(strict_types=1);
-
 namespace Subugoe\TextApiBundle\Translator;
 
-use Subugoe\TextApiBundle\Model\DocumentInterface;
+use Subugoe\TextApiBundle\Model\ArticleInterface;
 use Subugoe\TextApiBundle\Model\Presentation\Image;
 
 interface TranslatorInterface
 {
   public function getContentsById(string $id): array;
 
-  public function getDocumentById(string $id): DocumentInterface|null;
+  public function getDocumentById(string $id): ArticleInterface|null;
 
-  public function getMetadata(DocumentInterface $document): ?array;
+  public function getMetadata(string $id): ?array;
 
   public function getEntity(string $entityGnd): ?array;
 
@@ -25,5 +22,5 @@ interface TranslatorInterface
 
   public function getSupportCssUrl(string $documentId): string;
 
-  public function getImage(DocumentInterface $document): ?Image;
+  public function getImage(ArticleInterface $document): ?Image;
 }

@@ -2,11 +2,12 @@
 
 namespace Subugoe\TextApiBundle\Service;
 
+use Subugoe\TextApiBundle\Model\PageInterface;
 use Subugoe\TextApiBundle\Model\Presentation\Item;
 use Subugoe\TextApiBundle\Model\Presentation\Sequence;
 use Subugoe\TextApiBundle\Model\Presentation\Support;
 use Subugoe\TextApiBundle\Model\Presentation\Title;
-use Subugoe\TextApiBundle\Model\DocumentInterface;
+use Subugoe\TextApiBundle\Model\ArticleInterface;
 use Subugoe\TextApiBundle\Model\Presentation\Manifest;
 use Subugoe\TextApiBundle\Translator\TranslatorInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -37,7 +38,7 @@ class TextApiService
   public function getManifest(string $documentId): Manifest
   {
     $document = $this->translator->getDocumentById($documentId);
-    $metadata = $this->translator->getMetadata($document);
+    $metadata = $this->translator->getMetadata($documentId);
 
     $manifest = new Manifest();
     $manifest->setId($this->mainDomain.$this->router->generate('subugoe_text_api_manifest', ['id' => $documentId]));
@@ -59,7 +60,7 @@ class TextApiService
     return $manifest;
   }
 
-  public function getItem(DocumentInterface $document): Item
+  public function getItem(ArticleInterface $document): Item
   {
     $item = new Item();
 
@@ -93,6 +94,9 @@ class TextApiService
   private function getManifestSequence(string $documentId): array
   {
     $sequences = [];
+
+    /** @var PageInterface[] $contents */
+
     $contents = $this->translator->getContentsById($documentId);
 
     foreach ($contents as $content) {
@@ -100,7 +104,7 @@ class TextApiService
       $sequences[] = $sequence->setId(
         $this->mainDomain.$this->router->generate(
           'subugoe_text_api_item_page',
-          ['manifest' => $documentId, 'item' => $content->getFields()['id']]
+          ['manifest' => $documentId, 'item' => $content->getId()]
         )
       );
     }
