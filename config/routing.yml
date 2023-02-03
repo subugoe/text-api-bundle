@@ -29,6 +29,6 @@ subugoe_text_api_manifest:
     defaults: { _controller: Subugoe\TextApiBundle\Controller\TextApiController::manifest }
 
 subugoe_text_api_content:
-    path:      "text-api/{id}/content"
+    path:      "text-api/content/{type}/{id}.html"
     methods:  "GET"
     defaults: { _controller: Subugoe\TextApiBundle\Controller\TextApiController::content }

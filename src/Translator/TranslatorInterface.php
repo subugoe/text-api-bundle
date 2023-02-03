@@ -2,13 +2,14 @@
 namespace Subugoe\TextApiBundle\Translator;
 
 use Subugoe\TextApiBundle\Model\ArticleInterface;
+use Subugoe\TextApiBundle\Model\PageInterface;
 use Subugoe\TextApiBundle\Model\Presentation\Image;
 
 interface TranslatorInterface
 {
-  public function getContentsById(string $id): array;
+  public function getPageById(string $id): ?PageInterface;
 
-  public function getDocumentById(string $id): ArticleInterface|null;
+  public function getArticleById(string $id): ?ArticleInterface;
 
   public function getMetadata(string $id): ?array;
 
@@ -20,7 +21,5 @@ interface TranslatorInterface
 
   public function getManifestUrlByPageId(string $pageId): string;
 
-  public function getSupportCssUrl(string $documentId): string;
-
-  public function getImage(ArticleInterface $document): ?Image;
+  public function getSupportCssUrl(string $articleId): string;
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Subugoe\TextApiBundle\Translator;
 
 use Subugoe\TextApiBundle\Model\ArticleInterface;
+use Subugoe\TextApiBundle\Model\PageInterface;
 use Subugoe\TextApiBundle\Model\Presentation\Image;
 
 class SubugoeTranslator implements TranslatorInterface
@@ -14,22 +15,22 @@ class SubugoeTranslator implements TranslatorInterface
   {
   }
 
-  public function getSupportCssUrl(string $documentId): string
+  public function getSupportCssUrl(string $articleId): string
   {
     // TODO: Implement getSupportCss() method.
   }
 
-  public function getImage(ArticleInterface $document): ?Image
+  public function getImage(string $url): ?Image
   {
     // TODO: Implement getImage() method.
   }
 
-  public function getContentsById(string $id): array
+  public function getPageById(string $id): ?PageInterface
   {
-    // TODO: Implement getContentsById() method.
+    // TODO: Implement getPageById() method.
   }
 
-  public function getDocumentById(string $id): ArticleInterface|null
+  public function getArticleById(string $id): ?ArticleInterface
   {
     // TODO: Implement getDocumentById() method.
   }

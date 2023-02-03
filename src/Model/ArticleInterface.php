@@ -23,23 +23,7 @@ interface ArticleInterface
 
     public function getOriginPlace(): ?string;
 
+    public function getPageIds(): array;
+
     public function getTitle(): ?string;
-
-    public function setAuthor(?string $author): void;
-
-    public function setContent(string $content): void;
-
-    public function setId(string $id): void;
-
-    public function setImageUrl(?string $imageUrl): void;
-
-    public function setLicense(?string $license): void;
-
-    public function setMetadata(array $metadata): void;
-
-    public function setOriginDate(?string $originDate): void;
-
-    public function setOriginPlace(?string $originPlace): void;
-
-    public function setTitle(?string $title): void;
 }
