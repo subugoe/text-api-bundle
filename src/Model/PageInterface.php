@@ -24,5 +24,5 @@ interface PageInterface
 
     public function getContentTypes(): ?array;
 
-    public function getContentByType(): ?string;
+    public function getContentByType(string $type): ?string;
 }
