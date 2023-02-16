@@ -13,6 +13,7 @@ use Subugoe\TextApiBundle\Model\Presentation\Manifest;
 use Subugoe\TextApiBundle\Model\Presentation\SequenceItem;
 use Subugoe\TextApiBundle\Model\Presentation\Support;
 use Subugoe\TextApiBundle\Model\Presentation\Title;
+use Subugoe\TextApiBundle\Model\Presentation\Collection;
 use Subugoe\TextApiBundle\Translator\TranslatorInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -39,10 +40,15 @@ class TextApiService
         $this->translator = $translator;
     }
 
-    public function getManifest(string $articleId): Manifest
+    public function getCollection(string $collectionId): Collection
     {
-        $document = $this->translator->getArticleById($articleId);
-        $metadata = $this->translator->getMetadata($articleId);
+        return new Collection();
+    }
+
+    public function getManifest(string $collectionId, string $articleId): Manifest
+    {
+        $document = $this->translator->getArticleById($collectionId, $articleId);
+        $metadata = $this->translator->getMetadata($collectionId, $articleId);
 
         $manifest = new Manifest();
         $manifest->setId($this->createManifestId($document->getId()));
@@ -206,7 +212,7 @@ class TextApiService
         );
     }
 
-    public function getAnnotationCollectionForItem(): AnnotationCollection
+    public function getAnnotationCollectionForitem(): AnnotationCollection
     {
 
     }
@@ -230,14 +236,15 @@ class TextApiService
 
         $annotationCollection->setId(
             $this->mainDomain . $this->router->generate($routeName,
-                ['id' => $id, 'page' => $firstPageId]
+                ['id' => $id, 'page' => $first]
             )
         );
+
         $annotationCollection->setLabel($title);
         $annotationCollection->setTotal($total);
         $annotationCollection->setFirst(
             $this->mainDomain . $this->router->generate('subugoe_tido_annotation_page',
-                ['id' => $id, 'page' => $firstPageId]
+                ['id' => $id, 'page' => $firstPage]
             )
         );
 
