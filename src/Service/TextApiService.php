@@ -2,10 +2,10 @@
 
 namespace Subugoe\TextApiBundle\Service;
 
-use Subugoe\EMOBundle\Model\Annotation\AnnotationCollection;
-use Subugoe\EMOBundle\Model\Annotation\AnnotationPage;
-use Subugoe\EMOBundle\Model\DocumentInterface;
-use Subugoe\EMOBundle\Model\Presentation\Content;
+use Subugoe\TextApiBundle\Model\Annotation\AnnotationCollection;
+use Subugoe\TextApiBundle\Model\Annotation\AnnotationPage;
+use Subugoe\TextApiBundle\Model\Annotation\PartOf;
+use Subugoe\TextApiBundle\Model\Presentation\Content;
 use Subugoe\TextApiBundle\Model\Presentation\Image;
 use Subugoe\TextApiBundle\Model\Presentation\Item;
 use Subugoe\TextApiBundle\Model\Presentation\License;
@@ -165,106 +165,75 @@ class TextApiService
         return $contents;
     }
 
-//    public function getAnnotationCollection(DocumentInterface $document, string $type): AnnotationCollection
-//    {
-//        $annotationCollection = new AnnotationCollection();
-//
-//        if ('manifest' === $type) {
-//            $pages = $this->emoTranslator->getContentsById($document->getId());
-//            $firstPage = $pages[0]['id'];
-//            $lastPage = $pages[count($pages) - 1]['id'];
-//            $id = $document->getId();
-//            $title = $document->getTitle();
-//            $annotationCollection->setId($this->mainDomain . $this->router->generate('subugoe_tido_annotation_collection', ['id' => $document->getId()]));
-//        } else {
-//            $id = $document->getArticleId();
-//            $firstPage = $document->getId();
-//            $title = $document->getArticleTitle();
-//            $annotationCollection->setId($this->mainDomain . $this->router->generate('subugoe_tido_page_annotation_collection', ['id' => $id, 'page' => $firstPage]));
-//        }
-//
-//        $annotationCollection->setLabel($title);
-//        $annotationCollection->setTotal($this->emoTranslator->getManifestTotalNumberOfAnnotations($id));
-//        $annotationCollection->setFirst($this->mainDomain . $this->router->generate('subugoe_tido_annotation_page', ['id' => $id, 'page' => $firstPage]));
-//
-//        if ('manifest' === $type) {
-//            $annotationCollection->setLast($this->mainDomain . $this->router->generate('subugoe_tido_annotation_page', ['id' => $document->getId(), 'page' => $lastPage]));
-//        }
-//
-//        return ['annotationCollection' => $annotationCollection];
-//    }
-
-    public function getAnnotationCollectionForCollection(): AnnotationCollection
+    public function getAnnotationCollectionForItem(string $id, string $revision): AnnotationCollection
     {
+        $page = $this->translator->getPageById($id);
 
-    }
-
-    public function getAnnotationCollectionForManifest(string $id): AnnotationCollection
-    {
-        $article = $this->translator->getArticleById($id);
-
-        return $this->getAnnotationCollection(
-            $id,
-            $article->getTitle(),
-        0,
-        $article->getPageIds()[0] ?? null,
-            'manifest',
-        );
-    }
-
-    public function getAnnotationCollectionForitem(): AnnotationCollection
-    {
-
-    }
-
-
-    public function getAnnotationCollection(
-        string $id,
-        string $title,
-        int $total,
-        ?string $firstPageId,
-        string $for = 'collection' | 'manifest' | 'item',
-    ): AnnotationCollection
-    {
         $annotationCollection = new AnnotationCollection();
 
-        $routeName = '';
-
-        if ($for === 'collection') $routeName = 'subugoe_text_api_annotation_collection_for_collection';
-        else if ($for === 'manifest') $routeName = 'subugoe_text_api_annotation_collection_for_manifest';
-        else if ($for === 'item') $routeName = 'subugoe_text_api_annotation_collection_for_item';
+        $routeName = 'subugoe_text_api_annotation_collection_for_item';
+        $title = $page->getArticleTitle();
+        $articleId = $page->getArticleId();
+        $total = 0;
 
         $annotationCollection->setId(
             $this->mainDomain . $this->router->generate($routeName,
-                ['id' => $id, 'page' => $first]
+                ['item' => $id, 'manifest' => $articleId, 'revision' => $revision]
             )
         );
 
         $annotationCollection->setLabel($title);
         $annotationCollection->setTotal($total);
         $annotationCollection->setFirst(
-            $this->mainDomain . $this->router->generate('subugoe_tido_annotation_page',
-                ['id' => $id, 'page' => $firstPage]
+            $this->mainDomain . $this->router->generate(
+                'subugoe_text_api_annotation_page_for_item',
+                ['item' => $id, 'manifest' => $articleId, 'revision' => $revision]
+            )
+        );
+        $annotationCollection->setLast(
+            $this->mainDomain . $this->router->generate(
+                'subugoe_text_api_annotation_page_for_item',
+                ['item' => $id, 'manifest' => $articleId, 'revision' => $revision]
             )
         );
 
         return $annotationCollection;
     }
 
-
-    public function getAnnotationPage(DocumentInterface $document, DocumentInterface $page): array
+    public function getAnnotationPageForItem(string $id, string $revision): AnnotationPage
     {
+        $page = $this->translator->getPageById($id);
+
         $annotationPage = new AnnotationPage();
-        $annotationPage->setId($this->mainDomain . $this->router->generate('subugoe_tido_annotation_page', ['id' => $document->getId(), 'page' => $page->getId()]));
-        $annotationPage->setPartOf($this->getPartOf($document));
+        $annotationPage->setId(
+            $this->mainDomain . $this->router->generate(
+            'subugoe_text_api_annotation_page_for_item',
+                ['item' => $id, 'manifest' => $page->getArticleId(), 'revision' => $revision]
+            )
+        );
+
+        $partOf = new PartOf();
+        $partOf->setId(
+            $this->mainDomain.$this->router->generate(
+                'subugoe_text_api_annotation_collection_for_item',
+                ['item' => $id, 'manifest' => $page->getArticleId(), 'revision' => $revision]
+            )
+        );
+        $partOf->setLabel($page->getAnnotationCollectionLabel());
+        $partOf->setTotal($this->translator->getTotalNumberOfAnnotationsFromArticle($page->getArticleId()));
+
+        $annotationPage->setPartOf($partOf);
 
         $nextPageNumber = $page->getPageNumber() + 1;
 
-        if ($nextPageNumber <= (int)$document->getPageNumber()) {
+        if ($nextPageNumber <= $page->getPageNumber()) {
             $pattern = 'page' . $page->getPageNumber();
             $replace = 'page' . $nextPageNumber;
             $nextPageId = str_replace($pattern, $replace, $page->getId());
-            $next = $this->mainDomain . $this->router->generate('subugoe_tido_annotation_page', ['id' => $document->getId(), 'page' => $nextPageId]);
+            $next = $this->mainDomain . $this->router->generate(
+                'subugoe_text_api_annotation_page_for_item',
+                ['item' => $page->getId(), 'manifest' => $page->getArticleId(), 'revision' => $revision]
+            );
         }
 
         $annotationPage->setNext($next ?? null);
@@ -274,21 +243,24 @@ class TextApiService
             $pattern = 'page' . $page->getPageNumber();
             $replace = 'page' . $prevPageNumber;
             $prevPageId = str_replace($pattern, $replace, $page->getId());
-            $prev = $this->mainDomain . $this->router->generate('subugoe_tido_annotation_page', ['id' => $document->getId(), 'page' => $prevPageId]);
+            $prev = $this->mainDomain . $this->router->generate(
+                'subugoe_text_api_annotation_page_for_item',
+                ['item' => $id, 'manifest' => $page->getArticleId(), 'revision' => $revision]
+            );
         }
 
         $annotationPage->setPrev($prev ?? null);
 
-        if (1 === (int)$page->getPageNumber()) {
+        if (1 === $page->getPageNumber()) {
             $startIndex = 0;
         } else {
-            $startIndex = $this->emoTranslator->getItemAnnotationsStartIndex($document->getId(), (int)$page->getPageNumber());
+            $startIndex = $this->translator->getItemAnnotationsStartIndex($page->getId(), $page->getPageNumber());
         }
 
         $annotationPage->setStartIndex($startIndex);
-        $annotationPage->setItems($this->getItems($page));
+//        $annotationPage->setItems($this->getItems($page));
 
-        return ['annotationPage' => $annotationPage];
+        return $annotationPage;
     }
 
 }

@@ -17,7 +17,7 @@ interface TranslatorInterface
 
   public function getItemAnnotationsStartIndex(string $id, int $pageNumber): int;
 
-  public function getManifestTotalNumberOfAnnotations(string $id): int;
+  public function getTotalNumberOfAnnotationsFromArticle(string $id): int;
 
   public function getManifestUrlByPageId(string $pageId): string;
 

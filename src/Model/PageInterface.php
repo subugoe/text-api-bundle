@@ -25,4 +25,8 @@ interface PageInterface
     public function getContentTypes(): ?array;
 
     public function getContentByType(string $type): ?string;
+
+    public function getAnnotationCollectionLabel(): ?string;
+
+    public function getPageNumber(): ?int;
 }
