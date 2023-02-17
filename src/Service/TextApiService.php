@@ -45,34 +45,34 @@ class TextApiService
         return new Collection();
     }
 
-    public function getManifest(string $collectionId, string $articleId): Manifest
+    public function getManifest(?string $collectionId, string $articleId): Manifest
     {
-        $document = $this->translator->getArticleById($collectionId, $articleId);
-        $metadata = $this->translator->getMetadata($collectionId, $articleId);
+        $article = $this->translator->getArticleById($articleId);
+        $metadata = $this->translator->getMetadata($articleId);
 
         $manifest = new Manifest();
-        $manifest->setId($this->createManifestId($document->getId()));
-        $manifest->setLabel($document->getTitle());
+        $manifest->setId($this->createManifestId($article->getId()));
+        $manifest->setLabel($article->getTitle());
         $manifest->setMetadata($metadata);
-        $manifest->setSequence($this->getManifestSequence($articleId, $document->getPageIds()));
+        $manifest->setSequence($this->getManifestSequence($articleId, $article->getPageIds()));
         $manifest->setSupport($this->getSupportCss($articleId));
 
         // TODO: Uncomment for generic purposes
         // $manifest->setLicense($this->getLicense($document));
 
-        $manifest->setAnnotationCollection(
-            $this->mainDomain . $this->router->generate(
-                'subugoe_text_api_annotation_collection',
-                ['id' => $articleId]
-            )
-        );
+//        $manifest->setAnnotationCollection(
+//            $this->mainDomain . $this->router->generate(
+//                'subugoe_text_api_annotation_collection_for_manifest',
+//                ['manifest' => $articleId]
+//            )
+//        );
 
         return $manifest;
     }
 
-    public function getItem(string $id): Item
+    public function getItem(string $itemId, string $revision): Item
     {
-        $page = $this->translator->getPageById($id);
+        $page = $this->translator->getPageById($itemId);
 
         $item = new Item();
 
@@ -105,7 +105,12 @@ class TextApiService
         $types = $page->getContentTypes();
         $item->setContent($this->getContentsSequence($page->getId(), $page->getContentTypes()));
 
-//    $item->setAnnotationCollection($this->mainDomain.$this->router->generate('subugoe_tido_page_annotation_collection', ['id' => 'Z_1822-06-21_k', 'page' => $article->getId()]));
+        $item->setAnnotationCollection(
+            $this->mainDomain.$this->router->generate(
+            'subugoe_text_api_annotation_collection_for_item',
+                ['item' => $page->getId(), 'manifest' => $page->getArticleId(), 'revision' => $revision]
+            )
+        );
 
         return $item;
     }
@@ -118,15 +123,14 @@ class TextApiService
         return $page->getContentByType($type);
     }
 
-
     private function getManifestSequence(string $articleId, array $pageIds): array
     {
         $sequence = [];
 
         foreach ($pageIds as $pageId) {
             $sequence[] = new SequenceItem($this->mainDomain . $this->router->generate(
-                    'subugoe_text_api_item_page',
-                    ['manifest' => $articleId, 'item' => $pageId]
+                    'subugoe_text_api_item',
+                    ['manifest' => $articleId, 'item' => $pageId, 'revision' => 'latest']
                 ));
         }
 
@@ -258,7 +262,7 @@ class TextApiService
         }
 
         $annotationPage->setStartIndex($startIndex);
-//        $annotationPage->setItems($this->getItems($page));
+        $annotationPage->setItems($this->translator->getAnnotationItems($page));
 
         return $annotationPage;
     }

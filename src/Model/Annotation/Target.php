@@ -46,7 +46,7 @@ class Target
         return $this;
     }
 
-    public function setLanguag(string $language): self
+    public function setLanguage(string $language): self
     {
         $this->language = $language;
 
