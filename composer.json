@@ -1,6 +1,6 @@
 {
   "name": "subugoe/text-api-bundle",
-  "description": "TextAPI Bundle for symfony",
+  "description": "Provides general TextAPI implementation for Symfony 6",
   "license": "AGPL-3.0-or-later",
   "authors": [
     {
