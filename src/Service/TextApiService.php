@@ -2,18 +2,18 @@
 
 namespace Subugoe\TextApiBundle\Service;
 
-use Subugoe\TextApiBundle\Model\Annotation\AnnotationCollection;
-use Subugoe\TextApiBundle\Model\Annotation\AnnotationPage;
-use Subugoe\TextApiBundle\Model\Annotation\PartOf;
-use Subugoe\TextApiBundle\Model\Presentation\Content;
-use Subugoe\TextApiBundle\Model\Presentation\Image;
-use Subugoe\TextApiBundle\Model\Presentation\Item;
-use Subugoe\TextApiBundle\Model\Presentation\License;
-use Subugoe\TextApiBundle\Model\Presentation\Manifest;
-use Subugoe\TextApiBundle\Model\Presentation\SequenceItem;
-use Subugoe\TextApiBundle\Model\Presentation\Support;
-use Subugoe\TextApiBundle\Model\Presentation\Title;
-use Subugoe\TextApiBundle\Model\Presentation\Collection;
+use Subugoe\TextApiBundle\View\Annotation\AnnotationCollection;
+use Subugoe\TextApiBundle\View\Annotation\AnnotationPage;
+use Subugoe\TextApiBundle\View\Annotation\PartOf;
+use Subugoe\TextApiBundle\View\Presentation\Content;
+use Subugoe\TextApiBundle\View\Presentation\Image;
+use Subugoe\TextApiBundle\View\Presentation\Item;
+use Subugoe\TextApiBundle\View\Presentation\License;
+use Subugoe\TextApiBundle\View\Presentation\Manifest;
+use Subugoe\TextApiBundle\View\Presentation\SequenceItem;
+use Subugoe\TextApiBundle\View\Presentation\Support;
+use Subugoe\TextApiBundle\View\Presentation\Title;
+use Subugoe\TextApiBundle\View\Presentation\Collection;
 use Subugoe\TextApiBundle\Translator\TranslatorInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\RouterInterface;

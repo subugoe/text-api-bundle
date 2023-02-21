@@ -2,6 +2,12 @@
 
 namespace Subugoe\TextApiBundle\Model;
 
+/**
+ * A page is usually part of a medium (book, letter, manuscript) that is composed of one or more pages.
+ * It references back to the article and holds meta information about the "position" within the medium.
+ * It references the text (Content) and the corresponding image (Image)
+ * as well as possible annotations (AnnotationCollection).
+ */
 interface PageInterface
 {
     public function getArticleId(): ?string;

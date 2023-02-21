@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Subugoe\TextApiBundle\Model\Presentation;
+namespace Subugoe\TextApiBundle\View\Presentation;
 
 /**
  * @see https://subugoe.pages.gwdg.de/emo/text-api/page/specs/#manifest-json

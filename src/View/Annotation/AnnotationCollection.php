@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Subugoe\TextApiBundle\Model\Annotation;
+namespace Subugoe\TextApiBundle\View\Annotation;
 
 use Symfony\Component\Serializer\Annotation\SerializedName;
 

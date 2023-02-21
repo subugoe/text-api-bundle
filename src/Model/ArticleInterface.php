@@ -3,25 +3,13 @@
 namespace Subugoe\TextApiBundle\Model;
 
 /**
- * Document for holding generic data.
+ * An article usually a container object that represents a single medium (book, letter, manuscript).
+ * It references pages (PageInterface) that it is composed of
+ * and provides usually meta information about the medium itself.
  */
 interface ArticleInterface
 {
-    public function getAuthor(): ?string;
-
-    public function getContent(): string;
-
     public function getId(): ?string;
-
-    public function getImageUrl(): ?string;
-
-    public function getLicense(): ?string;
-
-    public function getMetadata(): array;
-
-    public function getOriginDate(): ?string;
-
-    public function getOriginPlace(): ?string;
 
     public function getPageIds(): array;
 

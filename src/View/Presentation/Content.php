@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Subugoe\TextApiBundle\Model\Presentation;
+namespace Subugoe\TextApiBundle\View\Presentation;
 
 /**
  * Item Content.

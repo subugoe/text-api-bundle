@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Subugoe\TextApiBundle\Model\Annotation;
+namespace Subugoe\TextApiBundle\View\Annotation;
 
 /**
  * @see https://subugoe.pages.gwdg.de/emo/text-api/page/annotation_specs/#partof-object

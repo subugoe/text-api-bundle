@@ -2,25 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Subugoe\TextApiBundle\Model\Presentation;
+namespace Subugoe\TextApiBundle\View\Presentation;
 
 /**
  * Manifest sequence.
  *
  * @see https://subugoe.pages.gwdg.de/emo/text-api/page/specs/#sequence-object
  */
-class SequenceItem
+class Sequence
 {
     private string $id;
 
     private string $type = 'item';
-    
-    public function __construct(string $id)
-    {
-      $this->id = $id;
-    }
 
-  public function getId(): string
+    public function getId(): string
     {
         return $this->id;
     }

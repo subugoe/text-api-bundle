@@ -3,7 +3,6 @@ namespace Subugoe\TextApiBundle\Translator;
 
 use Subugoe\TextApiBundle\Model\ArticleInterface;
 use Subugoe\TextApiBundle\Model\PageInterface;
-use Subugoe\TextApiBundle\Model\Presentation\Image;
 
 interface TranslatorInterface
 {
@@ -21,5 +20,5 @@ interface TranslatorInterface
 
   public function getManifestUrlByPageId(string $pageId): string;
 
-  public function getSupportCssUrl(string $articleId): string;
+  public function getSupportCssUrl(string $articleId): ?string;
 }
