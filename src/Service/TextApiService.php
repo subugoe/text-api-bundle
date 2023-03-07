@@ -2,6 +2,7 @@
 
 namespace Subugoe\TextApiBundle\Service;
 
+use Subugoe\TextApiBundle\Model\PageInterface;
 use Subugoe\TextApiBundle\View\Annotation\AnnotationCollection;
 use Subugoe\TextApiBundle\View\Annotation\AnnotationPage;
 use Subugoe\TextApiBundle\View\Annotation\PartOf;
@@ -50,11 +51,18 @@ class TextApiService
         $article = $this->translator->getArticleById($articleId);
         $metadata = $this->translator->getMetadata($articleId);
 
+        $pages = [];
+        foreach ($article->getPageIds() as $pageId) {
+            /** @var PageInterface $page */
+            $pages[] = $this->translator->getPageById($pageId);
+
+        }
+
         $manifest = new Manifest();
         $manifest->setId($this->createManifestId($article->getId()));
         $manifest->setLabel($article->getTitle());
         $manifest->setMetadata($metadata);
-        $manifest->setSequence($this->getManifestSequence($articleId, $article->getPageIds()));
+        $manifest->setSequence($this->getManifestSequence($articleId, $pages));
         $manifest->setSupport($this->getSupportCss($articleId));
 
         // TODO: Uncomment for generic purposes
@@ -123,15 +131,19 @@ class TextApiService
         return $page->getContentByType($type);
     }
 
-    private function getManifestSequence(string $articleId, array $pageIds): array
+    private function getManifestSequence(string $articleId, array $pages): array
     {
         $sequence = [];
 
-        foreach ($pageIds as $pageId) {
-            $sequence[] = new SequenceItem($this->mainDomain . $this->router->generate(
+        foreach ($pages as $page) {
+            /** @var PageInterface $page */
+            $sequenceItem = new SequenceItem($this->mainDomain . $this->router->generate(
                     'subugoe_text_api_item',
-                    ['manifest' => $articleId, 'item' => $pageId, 'revision' => 'latest']
+                    ['manifest' => $articleId, 'item' => $page->getId(), 'revision' => 'latest']
                 ));
+
+            $sequenceItem->setLabel($page->getTitle());
+            $sequence[] = $sequenceItem;
         }
 
         return $sequence;

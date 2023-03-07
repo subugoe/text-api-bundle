@@ -14,6 +14,8 @@ class SequenceItem
     private string $id;
 
     private string $type = 'item';
+    
+    private string $label;
 
     public function __construct(string $id)
     {
@@ -42,5 +44,15 @@ class SequenceItem
         $this->type = $type;
 
         return $this;
+    }
+    
+    public function getLabel(): string
+    {
+        return $this->label;
+    }
+    
+    public function setLabel(string $label): void
+    {
+        $this->label = $label;
     }
 }
