@@ -17,7 +17,7 @@ class Body
 
     private ?string $value = null;
 
-    /** @SerializedName("x-content-type") */
+    #[SerializedName("x-content-type")]
     private string $xContentType;
 
     public function getFormat(): string
