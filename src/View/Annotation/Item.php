@@ -13,7 +13,7 @@ class Item
 
     private string $id;
 
-    private ?Target $target = null;
+    private array $target = [];
 
     private string $type = 'Annotation';
 
@@ -27,7 +27,10 @@ class Item
         return $this->id;
     }
 
-    public function getTarget(): Target
+    /**
+     * @return  Target[]
+     */
+    public function getTarget(): array
     {
         return $this->target;
     }
@@ -51,7 +54,10 @@ class Item
         return $this;
     }
 
-    public function setTarget(Target $target): self
+    /**
+     * @param  Target[] $target
+     */
+    public function setTarget(array $target): self
     {
         $this->target = $target;
 
